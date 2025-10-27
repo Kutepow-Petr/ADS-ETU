@@ -7,8 +7,13 @@ let gridSize = 2
 let valueForExtension = 16
 let grid = new Grid(gameBoard, gridSize)
 
-grid.getRandomEmptyCell().linkTile(new Tile(gameBoard, 4))
+grid.getRandomEmptyCell().linkTile(new Tile(gameBoard))
 if (isMobileDevice()) {
+    document.addEventListener('touchmove', function (event) {
+                if (window.scrollY === 0) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
     setupInputByTouchscreen()
 } else {
     setupInputByKeyboard()
@@ -16,7 +21,7 @@ if (isMobileDevice()) {
 
 function setupInputByKeyboard() {
     window.addEventListener("keydown", (event) => {
-        handleInput(event.key.slice(5))
+        makeMove(event.key.slice(5))
         setupInputByKeyboard()
     }, { once: true })
 }
@@ -35,27 +40,27 @@ function setupInputByTouchscreen() {
         diffY = event.changedTouches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) {
             if (diffY < 0) {
-                handleInput("Up")
+                makeMove("Up")
                 setupInputByTouchscreen()
             }
             else {
-                handleInput("Down")
+                makeMove("Down")
                 setupInputByTouchscreen()
             }
         } else {
             if (diffX < 0) {
-                handleInput("Left")
+                makeMove("Left")
                 setupInputByTouchscreen()
             }
             else {
-                handleInput("Right")
+                makeMove("Right")
                 setupInputByTouchscreen()
             }
         }
     }, { once: true })
 }
 
-async function handleInput(direction) {
+async function makeMove(direction) {
     switch (direction) {
         case "Up":
             if (!canMoveUp()) {
@@ -85,42 +90,21 @@ async function handleInput(direction) {
 
     await new Promise(resolve => setTimeout(resolve, 100))
 
-    const maxValue = grid.findMaxValueOfTile()
+    const maxValue = grid.findMaxValue()
     if (maxValue === 2048) {
         await new Promise(resolve => setTimeout(resolve, 100))
         alert("YOU WON!")
         return
-    }
-    if (maxValue === valueForExtension) {
-        gridSize++
-        valueForExtension = maxValue * 4
-
-        const oldGrid = grid
-
-        grid = new Grid(gameBoard, gridSize)
-        switch (direction) {
-            case "Up":
-                grid.moveUpTiles(oldGrid)
-                break
-            case "Down":
-                grid.moveDownTiles(oldGrid)
-                break
-            case "Left":
-                grid.moveLeftTiles(oldGrid)
-                break
-            case "Right":
-                grid.moveRightTiles(oldGrid)
-                break
-        }
-
-        oldGrid.removeFromDOM()
+    } else if (maxValue === valueForExtension) {
+        increasingGrid(direction)
     }
 
-    grid.getRandomEmptyCell().linkTile(new Tile(gameBoard, maxValue))
+    grid.getRandomEmptyCell().linkTile(new Tile(gameBoard))
 
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
         await new Promise(resolve => setTimeout(resolve, 100))
         alert("Try again!")
+        location.reload(true)
         return
     }
 }
@@ -142,8 +126,6 @@ function moveRight() {
 }
 
 function slideTiles(groupedCells) {
-    const promises = []
-
     for (let i = 0; i < groupedCells.length; i++) {
         const group = groupedCells[i]
 
@@ -200,9 +182,6 @@ function canMove(groupedCells) {
                 continue
             }
             const cellWithTile = group[j]
-            if (cellWithTile.isEmpty()) {
-                return true
-            }
 
             const targetCell = group[j - 1]
             if (targetCell.canAccept(cellWithTile.linkedTile)) {
@@ -213,13 +192,36 @@ function canMove(groupedCells) {
     return false
 }
 
+function increasingGrid(direction) {
+    gridSize++
+        valueForExtension *= 4
+
+        const oldGrid = grid
+
+        grid = new Grid(gameBoard, gridSize)
+        switch (direction) {
+            case "Up":
+                grid.moveUpTiles(oldGrid)
+                break
+            case "Down":
+                grid.moveDownTiles(oldGrid)
+                break
+            case "Left":
+                grid.moveLeftTiles(oldGrid)
+                break
+            case "Right":
+                grid.moveRightTiles(oldGrid)
+                break
+        }
+
+        oldGrid.removeFromDOM()
+}
+
 function isMobileDevice() {
     const userAgent = navigator.userAgent.toLowerCase();
 
     const mobileKeywords = [
-        'android', 'iphone', 'ipod', 'blackberry',
-        'windows phone', 'webos', 'opera mini',
-        'mobile', 'tablet', 'ipad'
+        'android', 'iphone', 'ipod', 'windows phone', 'mobile', 'tablet', 'ipad'
     ];
 
     return mobileKeywords.some(keyword => userAgent.includes(keyword));

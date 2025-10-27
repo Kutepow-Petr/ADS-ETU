@@ -67,7 +67,7 @@ export class Grid {
         }
     }
 
-    findMaxValueOfTile() {
+    findMaxValue() {
         let maxValue = 0
         this.cells.forEach(cell => {
             if (cell.linkedTile) {

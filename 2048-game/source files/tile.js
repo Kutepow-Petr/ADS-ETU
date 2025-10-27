@@ -4,10 +4,10 @@ export class Tile {
     y
     value
 
-    constructor(gridElement, limit) {
+    constructor(gridElement) {
         this.tile = document.createElement("div")
         this.tile.classList.add("tile")
-        this.setValue(Math.pow(2, Math.ceil(Math.random() * Math.log2(limit))))
+        this.setValue(Math.random() > 0.5 ? 2 : 4)
         gridElement.append(this.tile)
     }
 
@@ -21,7 +21,7 @@ export class Tile {
     setValue(value) {
         this.value = value
         this.tile.textContent = value
-        const color = Math.log2(value) * 35
+        const color = Math.log2(value) * 34
         this.tile.style.setProperty("--bg-color", `hsl(${color}, 40%, 60%)`)
     }
 }
