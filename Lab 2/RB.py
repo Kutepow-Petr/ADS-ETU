@@ -215,21 +215,21 @@ if __name__ == "__main__":
     Tree = RB()
     number_of_elements = 10000
     # рандомные значения
-    # unique_random_numbers = random.sample(range(number_of_elements), number_of_elements)
-    # for n in range(number_of_elements):
-    #     x.append(n)
-    #     Tree.insert(unique_random_numbers[n])
-    #     y.append(Tree.height())
-    #     high.append(2 * math.log2(n + 1))
-    #     low.append(math.log2(n + 1))
-    # plt.plot(x, y, color="blue", label="h(n)")
-    # plt.plot(x, high, color="red", label="upper limit")
-    # plt.plot(x, low, color="green", label="lower limit")
-    # plt.xlabel("n")
-    # plt.ylabel("h")
-    # plt.legend()
-    # plt.title("Зависимость высоты h RB дерева от количества\nэлементов n(элементы генерируются случайным образом)")
-    # plt.show()
+    unique_random_numbers = random.sample(range(number_of_elements), number_of_elements)
+    for n in range(number_of_elements):
+        x.append(n)
+        Tree.insert(unique_random_numbers[n])
+        y.append(Tree.height())
+        high.append(2 * math.log2(n + 1))
+        low.append(math.log2(n + 1))
+    plt.plot(x, y, color="blue", label="h(n)")
+    plt.plot(x, high, color="red", label="upper limit")
+    plt.plot(x, low, color="green", label="lower limit")
+    plt.xlabel("n")
+    plt.ylabel("h")
+    plt.legend()
+    plt.title("Зависимость высоты h RB дерева от количества\nэлементов n(элементы генерируются случайным образом)")
+    plt.show()
     # возрастающие значения
     for n in range(number_of_elements):
         x.append(n)
@@ -244,4 +244,5 @@ if __name__ == "__main__":
     plt.ylabel("h")
     plt.legend()
     plt.title("Зависимость высоты h RB дерева от количества\nэлементов n(ключи монотонно возрастают)")
+
     plt.show()
