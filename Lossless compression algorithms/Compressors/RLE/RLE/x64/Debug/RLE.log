@@ -1,4 +1,0 @@
-﻿  main.cpp
-D:\Studies\AaDS\Lab1\COMPRESSORS\RLE\main.cpp(15,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Studies\AaDS\Lab1\COMPRESSORS\RLE\main.cpp(16,19): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  RLE.vcxproj -> D:\Studies\AaDS\Lab1\COMPRESSORS\RLE\x64\Debug\RLE.exe
