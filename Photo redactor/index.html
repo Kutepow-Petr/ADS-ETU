@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обработка фото</title>
+    <link rel="stylesheet" href="./redactorStyle.css">
+</head>
+
+<body>
+    <div id="drop-area">
+        <p id="preview">Перетащите изображение или выберите вручную</p>
+        <input type="file" id="image-upload" class="hidden" accept="image/*">
+    </div>
+
+    <div id="image-panel" class="hidden">
+        <canvas id="canvas"></canvas>
+        <div id="frame" class="hidden"></div>
+    </div>
+
+    <div id="panel" class="hidden">
+        <div class="container">
+            <div id="container-undo-redo" class="container">
+                <button id="undo" class="small-button"></button>
+                <button id="redo" class="small-button"></button>
+            </div>
+            <div id="container-show-original" class="container">
+                <button id="show-original" class="small-button"></button>
+            </div>
+        </div>
+
+        <div id="pipette" class="container hidden">
+            <span id="pipette-value">#00FF00</span>
+            <span id="pipette-color"></span>
+        </div>
+
+        <div id="sensitivity-container" class="container hidden">
+            <input type="range" id="sensitivity" min="0" max="100" value="50">
+            <span id="sensitivity-value">10</span>
+        </div>
+
+        <div id="adjust-menu" class="container hidden">
+            <div class="button-container">
+                <button id="brightness" class="medium-button"></button>
+                <span>Яркость</span>
+            </div>
+            <div class="button-container">
+                <button id="contrast" class="medium-button"></button>
+                <span>Контраст</span>
+            </div>
+            <div class="button-container">
+                <button id="saturation" class="medium-button"></button>
+                <span>Насыщенность</span>
+            </div>
+            <div class="button-container">
+                <button id="sharpen" class="medium-button"></button>
+                <span>Резкость</span>
+            </div>
+            <div class="button-container">
+                <button id="temperature" class="medium-button"></button>
+                <span>Температура</span>
+            </div>
+            <div class="button-container">
+                <button id="noise-reduction" class="medium-button"></button>
+                <span>Убрать шумы</span>
+            </div>
+        </div>
+
+        <div id="filters-menu" class="container hidden">
+            <div class="button-container">
+                <button id="portrait" class="big-button"></button>
+                <span>Портрет</span>
+            </div>
+            <div class="button-container">
+                <button id="landscape" class="big-button"></button>
+                <span>Пейзаж</span>
+            </div>
+            <div class="button-container">
+                <button id="autumn" class="big-button"></button>
+                <span>Осень</span>
+            </div>
+            <div class="button-container">
+                <button id="winter" class="big-button"></button>
+                <span>Зима</span>
+            </div>
+            <div class="button-container">
+                <button id="night" class="big-button"></button>
+                <span>Ночь</span>
+            </div>
+            <div class="button-container">
+                <button id="vintage" class="big-button"></button>
+                <span>Винтаж</span>
+            </div>
+            <div class="button-container">
+                <button id="retro" class="big-button"></button>
+                <span>Ретро</span>
+            </div>
+            <div class="button-container">
+                <button id="cinematic" class="big-button"></button>
+                <span>Кино</span>
+            </div>
+            <div class="button-container">
+                <button id="hollywood" class="big-button"></button>
+                <span>Голивуд</span>
+            </div>
+            <div class="button-container">
+                <button id="dramatic" class="big-button"></button>
+                <span>Драматичный</span>
+            </div>
+            <div class="button-container">
+                <button id="natural" class="big-button"></button>
+                <span>Натуральный</span>
+            </div>
+            <div class="button-container">
+                <button id="cool" class="big-button"></button>
+                <span>Холодный</span>
+            </div>
+            <div class="button-container">
+                <button id="warm" class="big-button"></button>
+                <span>Тёплый</span>
+            </div>
+            <div class="button-container">
+                <button id="sharp" class="big-button"></button>
+                <span>Резкий</span>
+            </div>
+            <div class="button-container">
+                <button id="soft" class="big-button"></button>
+                <span>Мягкий</span>
+            </div>
+            <div class="button-container">
+                <button id="pastel" class="big-button"></button>
+                <span>Пастель</span>
+            </div>
+            <div class="button-container">
+                <button id="fresh" class="big-button"></button>
+                <span>Свежий</span>
+            </div>
+            <div class="button-container">
+                <button id="food" class="big-button"></button>
+                <span>Еда</span>
+            </div>
+            <div class="button-container">
+                <button id="cyberpunk" class="big-button"></button>
+                <span>Киберпанк</span>
+            </div>
+            <div class="button-container">
+                <button id="neon" class="big-button"></button>
+                <span>Неон</span>
+            </div>
+            <div class="button-container">
+                <button id="sepia" class="big-button"></button>
+                <span>Сепия</span>
+            </div>
+            <div class="button-container">
+                <button id="bw" class="big-button"></button>
+                <span>Чёрно-белый</span>
+            </div>
+            <div class="button-container">
+                <button id="negative" class="big-button"></button>
+                <span>Негатив</span>
+            </div>
+            <div class="button-container">
+                <button id="blur" class="big-button"></button>
+                <span>Размытие</span>
+            </div>
+            <div class="button-container">
+                <button id="motion-blur-vertical" class="big-button"></button>
+                <span>Вертикальное размытие</span>
+            </div>
+            <div class="button-container">
+                <button id="motion-blur-horizontal" class="big-button"></button>
+                <span>Горизонтальное размытие</span>
+            </div>
+        </div>
+
+        <div id="modes" class="container">
+            <div class="button-container">
+                <button id="crop" class="medium-button"></button>
+                <span>Обрезать</span>
+            </div>
+            <div class="button-container">
+                <button id="adjust" class="medium-button"></button>
+                <span>Коррекция</span>
+            </div>
+            <div class="button-container">
+                <button id="filters" class="medium-button"></button>
+                <span>Фильтры</span>
+            </div>
+            <div class="button-container">
+                <button id="chroma-key" class="medium-button"></button>
+                <span>Хромакей</span>
+            </div>
+            <div class="button-container">
+                <button id="remove-background" class="medium-button"></button>
+                <span>Удалить фон</span>
+            </div>
+            <div class="button-container">
+                <button id="reset" class="medium-button"></button>
+                <span>Сброс</span>
+            </div>
+        </div>
+
+        <div id="container-save" class="container">
+            <button id="save-image">Скачать результат</button>
+        </div>
+    </div>
+
+    <script type="module" src="./RedactorScript.js" defer></script>
+</body>
+
+</html>
